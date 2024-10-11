@@ -5,14 +5,14 @@ class RedNacional
 {
 private:
     //ES* Estaciones = new ES [x]
-    static int PrecioCombustible [3][3];
+    int PrecioCombustible [3][3];
 
 public:
     RedNacional();
+    ~RedNacional();
     void AgregarES();
     void EliminarES();
     void Ventas();
-    void setPrecios();
     void setPrecios(int Region, int Tipo, int NuevoPrecio);
 
     int getPrecio(int Region, int Tipo){return PrecioCombustible[Region][Tipo];}

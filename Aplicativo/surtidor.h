@@ -18,7 +18,7 @@ private:
     void setModelo(unsigned int newModelo){modelo_ = newModelo;}
     void setCantVentas(unsigned int newCantVentas){cantventas_ = newCantVentas;}
     void setActivado(bool newActivado){activado_ = newActivado;}
-    void setVentas(unsigned int** newVentas, unsigned int cantventas);
+    void setVentas(unsigned int** newVentas);
 
 
 public:
@@ -28,7 +28,7 @@ public:
     short unsigned int getCodigo() {return codigo_;}
     string getModelo() const {return modelo_;}
     short unsigned int getCantVentas() const {return cantventas_;}
-    unsigned int** getDatoVentas() const;
+    unsigned int getDatoVentas(unsigned short int numVenta, unsigned short int numData);
     bool getActivado()const {return activado_;}
 
     void printCodigo() const;

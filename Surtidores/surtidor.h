@@ -8,36 +8,36 @@ using namespace std;
 class Surtidor
 {
 private:
-    int codigo_;
+    short unsigned int codigo_;
     string modelo_;
-    int cantventas_;
+    short unsigned int cantventas_;
     bool activado_;
     int** ventas = new int* [cantventas_];
 
-    void setCodigo(int newCodigo){codigo_ = newCodigo;}
-    void setModelo(int newModelo){modelo_ = newModelo;}
-    void setCantVentas(int newCantVentas){cantventas_ = newCantVentas;}
+    void setCodigo(unsigned int newCodigo){codigo_ = newCodigo;}
+    void setModelo(unsigned int newModelo){modelo_ = newModelo;}
+    void setCantVentas(unsigned int newCantVentas){cantventas_ = newCantVentas;}
     void setActivado(bool newActivado){activado_ = newActivado;}
-    void setVentas(int** newVentas, int cantventas);
+    void setVentas(int** newVentas);
 
 
 public:
-    Surtidor(int codigo, string modelo, int cantventas = 0, bool activado = true);
+    Surtidor(short unsigned int codigo, string modelo, bool activado = true);
     ~Surtidor();
 
-    int getCodigo() {return codigo_;}
+    short unsigned int getCodigo() {return codigo_;}
     string getModelo() const {return modelo_;}
-    int getCantVentas() const {return cantventas_;}
-    int** getVentas() const {return ventas;}
+    short unsigned int getCantVentas() const {return cantventas_;}
+    unsigned int getDatoVentas(unsigned short int numVenta, unsigned short int numData);
     bool getActivado()const {return activado_;}
 
     void printCodigo() const;
     void printModelo() const;
     void printCantVentas() const;
-    void printVentas() const;
+    void printVentas(int posventa) const;
     void printActivado() const;
 
-    void newVenta(int cantventas, int Year, int Mes, int Dia, int Hora, int Min, int CantComb, int TipoComb, int MetodoPago, int DocCliente, int Dinero);
+    void newVenta(int CantComb, int TipoComb, int MetodoPago, int DocCliente, int Dinero);
 };
 
 #endif // SURTIDOR_H

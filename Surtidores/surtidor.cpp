@@ -1,32 +1,46 @@
 #include "surtidor.h"
 #include <iostream>
+#include <chrono>
 
-Surtidor::Surtidor(int codigo, string modelo, int cantventas, bool activado):codigo_(codigo), modelo_(modelo), cantventas_(cantventas), activado_(activado){}
+Surtidor::Surtidor(short unsigned int codigo, string modelo, bool activado):codigo_(codigo), modelo_(modelo), cantventas_(0), activado_(activado), ventas(nullptr){}
 
 Surtidor::~Surtidor(){
-
+    delete[] ventas;
 }
 
-void Surtidor::setVentas(int** newVentas, int cantventas){
-    delete[] ventas;
-    ventas=new int* [cantventas];
+void Surtidor::setVentas(int** newVentas){
 
-    for (int i = 0; i<cantventas; i++){
+    delete[] ventas;
+    ventas=new int* [cantventas_+1];
+
+    for (int i = 0; i<cantventas_+1; i++){
         *(ventas+i)=*(newVentas+i);
     }
+    this->setCantVentas(cantventas_+1);
 }
 
-void Surtidor:: newVenta(int cantventas, int Year, int Mes, int Dia, int Hora, int Min, int CantComb, int TipoComb, int MetodoPago, int DocCliente, int Dinero){
-    int** ventaActu = new int* [cantventas+1];
-    for (int i = 0; i<cantventas; i++){
+unsigned int Surtidor::getDatoVentas(unsigned short int numVenta, unsigned short int numData){
+    if (numVenta<cantventas_){
+        return ventas[numVenta][numData];
+    }
+    else return -1;
+}
+
+void Surtidor:: newVenta(int CantComb, int TipoComb, int MetodoPago, int DocCliente, int Dinero){
+    int** ventaActu = new int* [cantventas_+1];
+    for (int i = 0; i<cantventas_; i++){
         ventaActu[i]=ventas[i];
     }
 
-    ventaActu[cantventas]=new int [10]{Year, Mes, Dia, Hora, Min, CantComb, TipoComb, MetodoPago, DocCliente, Dinero};
+    auto ahora = std::chrono::system_clock::now();
+    std::time_t tiempoActual = std::chrono::system_clock::to_time_t(ahora);
+    std::tm tmStruct;
+    localtime_s(&tmStruct, &tiempoActual);
 
-    Surtidor::setVentas(ventaActu, cantventas+1);
+    ventaActu[cantventas_]=new int [10]{tmStruct.tm_year+1900, tmStruct.tm_mon+1, tmStruct.tm_mday, tmStruct.tm_hour, tmStruct.tm_min, CantComb, TipoComb, MetodoPago, DocCliente, Dinero};
+
+    Surtidor::setVentas(ventaActu);
     delete[] ventaActu;
-    this->setCantVentas(cantventas+1);
 }
 
 void Surtidor::printCodigo() const{
@@ -41,56 +55,65 @@ void Surtidor:: printCantVentas() const{
     std::cout<<"Cantidad Ventas: "<<cantventas_<<std::endl;
 }
 
-void Surtidor:: printVentas() const{
-    std::cout<<"Datos de Ventas:"<<std::endl;
-    for (int i = 0; i<cantventas_; i++){
-        std::cout<<std::endl<<"Venta Numero "<<i+1<<std::endl;
-        for (int j = 0; j<10; j++){
-            switch (j){
+void Surtidor:: printVentas(int posventa) const{
 
-            case 0:
-                std::cout<<"Fecha y Hora:"<<std::endl<<"Anio\tMes\tDia\tHora\tMins"<<std::endl;
-                std::cout<<ventas[i][j]<<'\t';
-                break;
-
-            case 5:
-                std::cout<<std::endl<<"Combustible: "<<std::endl<<"Cantidad\tTipo"<<std::endl;
-                std::cout<<ventas[i][j]<<'\t'<<'\t';
-                break;
-
-            case 6:
-                switch (ventas[i][j]){
-                case 0:
-                    std::cout<<"Regular";
-                    break;
-                case 1:
-                    std::cout<<"Premium";
-                    break;
-                case 2:
-                    std::cout<<"EcoExtra";
-                    break;
-                }
-                break;
-
-            case 7:
-                std::cout<<std::endl<<"Cliente: "<<std::endl<<"Metodo pago\tDocumento\tDinero"<<std::endl;
-                switch (ventas[i][j]){
-                case 0:
-                    std::cout<<"Efectivo\t";
-                    break;
-                case 1:
-                    std::cout<<"TCredito\t";
-                    break;
-                case 2:
-                    std::cout<<"Tdebito \t";
-                    break;
-                }
-                break;
-
-                default:
-                    std::cout<<ventas[i][j]<<'\t';
-            }
-        }
-        std::cout<<std::endl<<"_________________________________________";
+    if (cantventas_<1){
+        std::cout<<std::endl<<"El surtidor con codigo "<< codigo_ <<" no ha realizado ventas"<<std::endl;
+        return;
     }
+
+    if (posventa>=cantventas_){
+        std::cout<<std::endl<<"Ya se mostraron todas las ventas del surtidor con codigo "<< codigo_ <<std::endl;
+        return;
+    }
+
+    std::cout<<std::endl<<"Venta Numero "<<posventa+1<<std::endl;
+    for (int j = 0; j<10; j++){
+        switch (j){
+
+        case 0:
+            std::cout<<std::endl<<"Fecha y Hora:\nAnio\tMes\tDia\tHora\tMins"<<std::endl;
+            std::cout<<ventas[posventa][j]<<'\t';
+            break;
+
+        case 5:
+            std::cout<<std::endl<<"\nCombustible:\nCantidad\tTipo"<<std::endl;
+            std::cout<<ventas[posventa][j]<<'\t'<<'\t';
+            break;
+
+        case 6:
+            switch (ventas[posventa][j]){
+            case 0:
+                std::cout<<"Regular\n";
+                break;
+            case 1:
+                std::cout<<"Premium\n";
+                break;
+            case 2:
+                std::cout<<"EcoExtra\n";
+                break;
+            }
+            break;
+
+        case 7:
+            std::cout<<std::endl<<"Cliente: "<<std::endl<<"Metodo pago\tDocumento\tDinero"<<std::endl;
+            switch (ventas[posventa][j]){
+            case 0:
+                std::cout<<"Efectivo\t";
+                break;
+            case 1:
+                std::cout<<"TCredito\t";
+                break;
+            case 2:
+                std::cout<<"Tdebito \t";
+                break;
+            }
+            break;
+
+        default:
+            std::cout<<ventas[posventa][j]<<'\t';
+        }
+    }
+    std::cout<<std::endl<<"_________________________________________"<<std::endl;
+
 }

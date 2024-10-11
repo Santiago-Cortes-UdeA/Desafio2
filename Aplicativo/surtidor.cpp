@@ -7,14 +7,21 @@ Surtidor::~Surtidor(){
     delete[] ventas;
 }
 
-void Surtidor::setVentas(unsigned int** newVentas, unsigned int cantventas){
+void Surtidor::setVentas(unsigned int** newVentas){
 
     delete[] ventas;
-    ventas=new unsigned int* [cantventas];
+    ventas=new unsigned int* [cantventas_+1];
 
-    for (int i = 0; i<cantventas; i++){
+    for (int i = 0; i<cantventas_+1; i++){
         *(ventas+i)=*(newVentas+i);
     }
+}
+
+unsigned int Surtidor::getDatoVentas(unsigned short int numVenta, unsigned short int numData){
+    if (numVenta<cantventas_){
+        return ventas[numVenta][numData];
+    }
+    else return -1;
 }
 
 void Surtidor:: newVenta(short unsigned int cantventas, short unsigned int Year, short unsigned int Mes, short unsigned int Dia, short unsigned int Hora, short unsigned int Min, short unsigned int CantComb, short unsigned int TipoComb, short unsigned int MetodoPago, unsigned int DocCliente, unsigned int Dinero){
@@ -25,7 +32,7 @@ void Surtidor:: newVenta(short unsigned int cantventas, short unsigned int Year,
 
     ventaActu[cantventas]=new unsigned int [10]{Year, Mes, Dia, Hora, Min, CantComb, TipoComb, MetodoPago, DocCliente, Dinero};
 
-    Surtidor::setVentas(ventaActu, cantventas+1);
+    Surtidor::setVentas(ventaActu);
     delete[] ventaActu;
     this->setCantVentas(cantventas+1);
 }
@@ -97,10 +104,10 @@ void Surtidor:: printVentas(int posventa) const{
             }
             break;
 
-            default:
-                std::cout<<ventas[posventa][j]<<'\t';
+        default:
+            std::cout<<ventas[posventa][j]<<'\t';
         }
     }
-        std::cout<<std::endl<<"_________________________________________"<<std::endl;
+    std::cout<<std::endl<<"_________________________________________"<<std::endl;
 
 }
