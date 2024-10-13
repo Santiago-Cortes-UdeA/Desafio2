@@ -1,40 +1,49 @@
 #include "surtidor.h"
 #include <iostream>
+#include <chrono>
 
-Surtidor::Surtidor(short unsigned int codigo, string modelo, short unsigned int cantventas, bool activado):codigo_(codigo), modelo_(modelo), cantventas_(cantventas), activado_(activado){}
+Surtidor::Surtidor(unsigned int codigo, string modelo):codigo_(codigo), modelo_(modelo), cantventas_(0), activado_(true), ventas(nullptr){}
 
 Surtidor::~Surtidor(){
+    for (int i = 0; i<cantventas_; i++){
+        delete[] ventas[i];
+    }
     delete[] ventas;
 }
 
-void Surtidor::setVentas(unsigned int** newVentas){
+void Surtidor::setVentas(int** newVentas){
 
     delete[] ventas;
-    ventas=new unsigned int* [cantventas_+1];
+    ventas=new int* [cantventas_+1];
 
     for (int i = 0; i<cantventas_+1; i++){
         *(ventas+i)=*(newVentas+i);
     }
+    cantventas_++;
 }
 
 unsigned int Surtidor::getDatoVentas(unsigned short int numVenta, unsigned short int numData){
     if (numVenta<cantventas_){
         return ventas[numVenta][numData];
     }
-    else return -1;
+    else return 0;
 }
 
-void Surtidor:: newVenta(short unsigned int cantventas, short unsigned int Year, short unsigned int Mes, short unsigned int Dia, short unsigned int Hora, short unsigned int Min, short unsigned int CantComb, short unsigned int TipoComb, short unsigned int MetodoPago, unsigned int DocCliente, unsigned int Dinero){
-    unsigned int** ventaActu = new unsigned int* [cantventas+1];
-    for (int i = 0; i<cantventas; i++){
+void Surtidor:: newVenta(int CantComb, int TipoComb, int MetodoPago, int DocCliente, int Dinero){
+    int** ventaActu = new int* [cantventas_+1];
+    for (int i = 0; i<cantventas_; i++){
         ventaActu[i]=ventas[i];
     }
 
-    ventaActu[cantventas]=new unsigned int [10]{Year, Mes, Dia, Hora, Min, CantComb, TipoComb, MetodoPago, DocCliente, Dinero};
+    auto ahora = std::chrono::system_clock::now();
+    std::time_t tiempoActual = std::chrono::system_clock::to_time_t(ahora);
+    std::tm tmStruct;
+    localtime_s(&tmStruct, &tiempoActual);
+
+    ventaActu[cantventas_]=new int [10]{tmStruct.tm_year+1900, tmStruct.tm_mon+1, tmStruct.tm_mday, tmStruct.tm_hour, tmStruct.tm_min, CantComb, TipoComb, MetodoPago, DocCliente, Dinero};
 
     Surtidor::setVentas(ventaActu);
     delete[] ventaActu;
-    this->setCantVentas(cantventas+1);
 }
 
 void Surtidor::printCodigo() const{
@@ -61,7 +70,7 @@ void Surtidor:: printVentas(int posventa) const{
         return;
     }
 
-    std::cout<<std::endl<<"Venta Numero "<<posventa+1<<std::endl;
+    std::cout<<std::endl<<"Venta Numero "<<posventa+1<<" del Surtidor con Codigo "<<codigo_<<std::endl;
     for (int j = 0; j<10; j++){
         switch (j){
 
@@ -109,5 +118,9 @@ void Surtidor:: printVentas(int posventa) const{
         }
     }
     std::cout<<std::endl<<"_________________________________________"<<std::endl;
+}
 
+void Surtidor::cambiarIsla(int NewIsla){
+    codigo_-=codigo_%1000-codigo_%10;
+    codigo_+=NewIsla*1000;
 }

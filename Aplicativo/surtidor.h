@@ -8,28 +8,30 @@ using namespace std;
 class Surtidor
 {
 private:
-    short unsigned int codigo_;
+    int codigo_;
     string modelo_;
     short unsigned int cantventas_;
     bool activado_;
-    unsigned int** ventas = new unsigned int* [cantventas_];
+    int** ventas;
 
     void setCodigo(unsigned int newCodigo){codigo_ = newCodigo;}
     void setModelo(unsigned int newModelo){modelo_ = newModelo;}
     void setCantVentas(unsigned int newCantVentas){cantventas_ = newCantVentas;}
-    void setActivado(bool newActivado){activado_ = newActivado;}
-    void setVentas(unsigned int** newVentas);
+
+    void setVentas(int** newVentas);
 
 
 public:
-    Surtidor(short unsigned int codigo, string modelo, short unsigned int cantventas = 0, bool activado = true);
+    Surtidor(unsigned int codigo, string modelo);
     ~Surtidor();
 
-    short unsigned int getCodigo() {return codigo_;}
+    int getCodigo() {return codigo_;}
     string getModelo() const {return modelo_;}
     short unsigned int getCantVentas() const {return cantventas_;}
     unsigned int getDatoVentas(unsigned short int numVenta, unsigned short int numData);
     bool getActivado()const {return activado_;}
+
+    void setActivado(bool newActivado){activado_ = newActivado;}
 
     void printCodigo() const;
     void printModelo() const;
@@ -37,7 +39,8 @@ public:
     void printVentas(int posventa) const;
     void printActivado() const;
 
-    void newVenta(short unsigned int cantventas, short unsigned int Year, short unsigned int Mes, short unsigned int Dia, short unsigned int Hora, short unsigned int Min, short unsigned int CantComb, short unsigned int TipoComb, short unsigned int MetodoPago, unsigned int DocCliente, unsigned int Dinero);
+    void newVenta(int CantComb, int TipoComb, int MetodoPago, int DocCliente, int Dinero);
+    void cambiarIsla(int NewIsla);//Conversar si es necesario o no (problemas de seguridad)
 };
 
 #endif // SURTIDOR_H
