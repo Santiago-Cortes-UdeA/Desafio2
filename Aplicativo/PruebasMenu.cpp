@@ -41,7 +41,7 @@ int main()
 
             do{
                 Opcion_=-1;
-                cout<<"\nEscoja una opcion:\n0. Salir\n1. Agregar Estacion de Servicio\n2. Eliminar Estaciones de Servicio\n3. Calcular Monto Total de Ventas\n4. Fijar los precios de combustible\n";
+                cout<<"\nEscoja una opcion:\n0. Salir\n1. Agregar Estacion de Servicio\n2. Eliminar Estaciones de Servicio\n3. Calcular Monto Total de Ventas\n4. Fijar los Precios de Combustible\n";
                 cin>>Opcion_;
                 entradaValida=OpcionValida<short unsigned int>(Opcion_, 4);
 
@@ -54,15 +54,16 @@ int main()
                     float Lat;
                     float Long;
                     cout<<"\nIngrese el Nombre de la Estacion: ";
+                    getline(cin, Nombre);
                     do{
-                        cin>>Nombre;
+                        getline(cin, Nombre);
                         if (Nombre.empty()) cout<<endl<<"\nEl nombre no puede estar vacio. Intentelo de nuevo: ";
                     }
                     while (Nombre.empty());
 
                     cout<<"\nIngrese el Nombre del Gerente: ";
                     do{
-                        cin>>Gerente;
+                        getline(cin, Gerente);
                         if (Gerente.empty()) cout<<endl<<"\nEl nombre no puede estar vacio. Intentelo de nuevo: ";
                     }
                     while (Gerente.empty());
@@ -133,6 +134,7 @@ int main()
                         cout<<endl<<"No hay estaciones creadas, no se puede eliminar nada\n";
                     }
                     else{
+                        cout<<endl<<"Estaciones disponibles: "<<endl;
                         short unsigned int Eliminar;
                         cout<<"0. "<<"Cancelar"<<endl;
                         for (int i = 0; i<Red.getCantEsts(); i++){
@@ -160,6 +162,25 @@ int main()
                     unsigned short int Opcion_Region=-1;
                     unsigned short int Opcion_Combustible=-1;
                     unsigned short int Opcion_Precio=-1;
+                    cout<<endl<<"Precios Actuales:"<<endl
+                         <<"\tRegular\tPremium\tEcoExtra\n";
+                    for (int i = 0; i<3; i++){
+                        switch (i){
+                        case 0:
+                            cout<<"Norte\t";
+                            break;
+                        case 1:
+                            cout<<"Centro\t";
+                            break;
+                        case 2:
+                            cout<<"Sur\t";
+                            break;
+                        }
+                        for (int j=0; j<3; j++){
+                            cout<<Red.getPrecio(i,j)<<'\t';
+                        }
+                        cout<<endl;
+                    }
                     while(!entradaValida){
                         cout<<"\nEn que region desea cambiar el precio?\n1. Norte\n2. Centro\n3. Sur\n";
                         cin>>Opcion_Region;
@@ -186,22 +207,28 @@ int main()
 
                     entradaValida=false;
 
-                    cout<<"\nPrecios antes:"<<"\n____________________\n\n";
-                    for (int i = 0; i<3; i++){
-                        for (int j = 0; j<3; j++){
-                            cout<<Red.getPrecio(i, j)<<endl;
-                        }
-                        cout<<"____________________\n\n";
-                    }
+
 
                     Red.setPrecios(Opcion_Region, Opcion_Combustible, Opcion_Precio);
 
-                    cout<<"\nPrecios despues:"<<"\n____________________\n\n";
+                    cout<<endl<<"Precios Nuevos:"<<endl
+                         <<"\tRegular\tPremium\tEcoExtra\n";
                     for (int i = 0; i<3; i++){
-                        for (int j = 0; j<3; j++){
-                            cout<<Red.getPrecio(i, j)<<endl;
+                        switch (i){
+                        case 0:
+                            cout<<"Norte\t";
+                            break;
+                        case 1:
+                            cout<<"Centro\t";
+                            break;
+                        case 2:
+                            cout<<"Sur\t";
+                            break;
                         }
-                        cout<<"____________________\n\n";
+                        for (int j=0; j<3; j++){
+                            cout<<Red.getPrecio(i,j)<<'\t';
+                        }
+                        cout<<endl;
                     }
                 }
             }
@@ -213,6 +240,7 @@ int main()
                 cout<<"\nNo hay estaciones creadas, no se puede acceder a estas opciones\n";
             }
             else{
+                cout<<endl<<"Estaciones disponibles: "<<endl;
                 short unsigned int Est=-1;
                 for (int i = 0; i<Red.getCantEsts(); i++){
                     cout<<i+1<<". "<<Red.getEstacion(i)->getcodigo()<<endl;
@@ -236,62 +264,150 @@ int main()
                     if (Opcion_==0) entradaValida=true;
 
                     else if (Opcion_==1){
-                        entradaValida=false;
-                        string Modelo;
-                        unsigned short int Isla = 0;
-                        while (!entradaValida){
-                            cout<<"\nIngrese el modelo del surtidor\n:";
-                            cin>>Modelo;
-                            if (Modelo.empty()){
-                                cout<<"\nEl modelo no puede estar vacio\n";
-                            }
-                            else entradaValida=true;
-                        }
-
-                        entradaValida=false;
-
-                        if (EstAct->getcantislas()>0){
-                            cout<<"\nIslas disponibles:\n"
-                                    "0. Isla Nueva\n";
-                            for (int i = 0; i<EstAct->getcantislas(); i++){
-                                cout<<i+1<<". "<<EstAct->getcodigoisla(i)<<endl;
-                            }
-                            while (!entradaValida){
-                                cout<<endl<<"Ingrese el numero correspondiente a la isla en la que desea agregar el surtidor:\n";
-                                cin>>Isla;
-                                entradaValida=OpcionValida<unsigned short int>(Isla, EstAct->getcantislas());
-                            }
-                            entradaValida=false;
+                        if (EstAct->getcantsurts()==12){
+                            cout<<endl<<"Hay 12 surtidores. No se pueden agregar mas."<<endl;
                         }
                         else{
-                            cout<<endl<<"Se agregara en una isla nueva ya que no hay islas preexistentes en esta estacion\n";
-                        }
+                            entradaValida=false;
+                            string Modelo;
+                            unsigned short int Isla = 0;
+                            cout<<"\nIngrese el modelo del surtidor: \n";
+                            getline(cin, Modelo);
+                            while (!entradaValida){
+                                getline(cin, Modelo);
+                                if (Modelo.empty()){
+                                    cout<<"\nEl modelo no puede estar vacio. Intentelo de nuevo\n";
+                                }
+                                else entradaValida=true;
+                            }
 
-                        EstAct->AddSurtidor(Modelo,Isla);
+                            entradaValida=false;
+
+                            if (EstAct->getcantislas()>0){
+                                cout<<"\nIslas disponibles:\n"
+                                        "0. Isla Nueva\n";
+                                for (int i = 0; i<EstAct->getcantislas(); i++){
+                                    cout<<i+1<<". "<<EstAct->getcodigoisla(i)<<endl;
+                                }
+                                while (!entradaValida){
+                                    cout<<endl<<"Ingrese el numero correspondiente a la isla en la que desea agregar el surtidor:\n";
+                                    cin>>Isla;
+                                    entradaValida=OpcionValida<unsigned short int>(Isla, EstAct->getcantislas());
+                                }
+
+                            }
+                            else{
+                                cout<<endl<<"Se agregara en una isla nueva ya que no hay islas preexistentes en esta estacion\n";
+                            }
+                            entradaValida=false;
+                            short unsigned int Agregar;
+
+                            cout<<"Datos del Surtidor:\nModelo: "<<Modelo<<endl<<"Isla: ";
+                            if (Isla==0) cout<<"Nueva Isla"<<endl;
+                            else cout<<Isla-1<<endl;
+
+                            while (!entradaValida){
+                                cout<<endl<<"Esta seguro que desea agregar este surtidor?\n1. Si, Agregar\n2. No, Cancelar\n"<<endl;
+                                cin>>Agregar;
+                                entradaValida=OpcionValida<short unsigned int>(Agregar,2,1);
+                            }
+
+                            if (Agregar==1) EstAct->AddSurtidor(Modelo,Isla);
+                        }
+                        entradaValida=false;
                     }
 
                     else if (Opcion_==2){
-
+                        entradaValida=false;
+                        if (EstAct->getcantsurts()<=2){
+                            cout<<endl<<"Hay 2 Surtidores o menos, no se puede eliminar ninguno\n";
+                        }
+                        else{
+                            short unsigned int Eliminar;
+                            cout<<"0. "<<"Cancelar"<<endl;
+                            for (int i = 0; i<EstAct->getcantsurts(); i++){
+                                cout<<i+1<<". "<<EstAct->getSurtidor(i)->getCodigo()<<endl;
+                            }
+                            while(!entradaValida){
+                                cout<<"Ingrese el numero correspondiente al surtidor que desea eliminar"<<endl;
+                                cin>>Eliminar;
+                                entradaValida=OpcionValida<short unsigned int>(Eliminar,EstAct->getcantsurts());
+                            }
+                            if (Eliminar>0){
+                                EstAct->DeleteSurtidor(Eliminar-1);
+                            }
+                        }
+                        entradaValida=false;
                     }
 
                     else if (Opcion_==3){
-
+                        entradaValida=false;
+                        int* SurtidoresInactivos = new int [EstAct->getcantsurts()];
+                        int CantSurtsIna = 0;
+                        cout<<endl<<"Surtidores Inactivos:"<<endl;
+                        for (int i = 0; i<EstAct->getcantsurts(); i++){
+                            if (!EstAct->getSurtidor(i)->getActivado()){
+                                cout<<CantSurtsIna+1<<". "<<EstAct->getSurtidor(i)->getCodigo()<<endl;
+                                SurtidoresInactivos[CantSurtsIna]=i;
+                                CantSurtsIna++;
+                            }
+                        }
+                        if (CantSurtsIna>0){
+                            cout<<"0. Cancelar"<<endl;
+                            short unsigned int Activar;
+                            cout<<endl<<"Ingrese el numero que corresponde al surtidor que desea activar"<<endl;
+                            while (!entradaValida){
+                                cin>>Activar;
+                                entradaValida=OpcionValida<unsigned short int>(Activar,CantSurtsIna);
+                            }
+                            if (Activar>0){
+                                EstAct->ActivarSurtidor(SurtidoresInactivos[Activar-1]);
+                            }
+                        }
+                        else{
+                            cout<<endl<<"No hay surtidores inactivos. Ninguno puede ser activado."<<endl;
+                        }
+                        entradaValida=false;
                     }
 
                     else if (Opcion_==4){
-
+                        entradaValida=false;
+                        int* SurtidoresActivos = new int [EstAct->getcantsurts()];
+                        int CantSurtsAct = 0;
+                        cout<<endl<<"Surtidores Activos:"<<endl;
+                        for (int i = 0; i<EstAct->getcantsurts(); i++){
+                            if (EstAct->getSurtidor(i)->getActivado()){
+                                cout<<CantSurtsAct+1<<". "<<EstAct->getSurtidor(i)->getCodigo()<<endl;
+                                SurtidoresActivos[CantSurtsAct]=i;
+                                CantSurtsAct++;
+                            }
+                        }
+                        if (CantSurtsAct>0){
+                            cout<<"0. Cancelar"<<endl;
+                            short unsigned int Desactivar;
+                            cout<<endl<<"Ingrese el numero que corresponde al surtidor que desea desactivar"<<endl;
+                            while (!entradaValida){
+                                cin>>Desactivar;
+                                entradaValida=OpcionValida<unsigned short int>(Desactivar,CantSurtsAct);
+                            }
+                            if (Desactivar>0){
+                                EstAct->DesactivarSurtidor(SurtidoresActivos[Desactivar-1]);
+                            }
+                        }
+                        else{
+                            cout<<endl<<"No hay surtidores activos. Ninguno puede ser desactivado."<<endl;
+                        }
+                        entradaValida=false;
                     }
 
                     else if (Opcion_==5){
-
+                        EstAct->ConsultarTransacciones();
+                        entradaValida=false;
                     }
 
                     else if (Opcion_==6){
-
-                    }
-
-                    else if (Opcion_==7){
-
+                        EstAct->ReporteCantVendidaCombustibles();
+                        entradaValida=false;
                     }
 
                 }
@@ -300,7 +416,25 @@ int main()
         }
 
         else if (Opcion==3){
+            entradaValida=false;
+            if (Red.getCantEsts()==0){
+                cout<<endl<<"No se pueden verificar fugas, ya que no hay estaciones"<<endl;
+            }
+            else{
+                short unsigned int Est=-1;
+                cout<<endl<<"Estaciones Disponibles:"<<endl;
+                for (int i = 0; i<Red.getCantEsts(); i++){
+                    cout<<i+1<<". "<<Red.getEstacion(i)->getcodigo()<<endl;
+                }
+                while (!entradaValida){
+                    cout<<"\nIngrese el numero que corresponde a la estacion donde desea verificar la presencia de fugas:"<<endl;
+                    cin>>Est;
+                    entradaValida = OpcionValida <short unsigned int>(Est,Red.getCantEsts());
+                }
 
+                Estacion* EstAct = Red.getEstacion(Est-1);
+                Red.VerificarFugas(EstAct);
+            }
         }
 
         else{
@@ -310,7 +444,7 @@ int main()
             }
             else{
                 short unsigned int Est=-1;
-                cout<<endl<<"Estaciones Disponibles:";
+                cout<<endl<<"Estaciones Disponibles:"<<endl;
                 for (int i = 0; i<Red.getCantEsts(); i++){
                     cout<<i+1<<". "<<Red.getEstacion(i)->getcodigo()<<endl;
                 }
@@ -326,9 +460,20 @@ int main()
                     cout<<endl<<"No se puede simular una venta ya que no hay surtidores en esta estacion"<<endl;
                 }
                 else{
-                    EstAct->SimularVenta(rand()%EstAct->getcantsurts(),Red.getPrecio(EstAct->getregion(),rand()%3));
+                    short unsigned int TipoComb = rand()%3;
+                    EstAct->SimularVenta(Red.getPrecio(EstAct->getregion(),TipoComb), TipoComb);
                 }
             }
+        }
+
+        if (Red.getCantEsts()>0){
+            unsigned short int Num1 = rand()%5;
+            unsigned short int Num2 = rand()%5;
+            if (Num1==Num2){
+                Estacion* Est = Red.getEstacion(rand()%Red.getCantEsts());
+                Est->SimularFuga();
+            }
+
         }
 
         entradaValida=false;

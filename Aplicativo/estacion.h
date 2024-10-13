@@ -24,6 +24,7 @@ private:
     Surtidor** Surtidores;
     int* codigos_islas;
     int tanque_central_[3];
+    int vendido_[3];
 
     // Setters
     void setNombre(string nombre) {nombre_= nombre;}
@@ -58,17 +59,18 @@ public:
     int getcodigoisla(int isla){return codigos_islas[isla];}
     int gettanquecentral(int tipo) {return tanque_central_[tipo];}
     int getalmacenamientoactual(int tipo) {return almacenamiento_actual_[tipo];}
+    int getvendido(int tipo){return vendido_[tipo];}
     float* getgps() {return gps_;}
     Surtidor* getSurtidor(int Surt) {return Surtidores[Surt];}
 
     // Otros
     void AddSurtidor(string Modelo, int Isla);
     void DeleteSurtidor(int Surt);
-    void MoverSurtIsla(int Surt, int Isla); //Conversar si es necesario (Problemas de seguridad)
     void ActivarSurtidor(int Surt);
     void DesactivarSurtidor(int Surt);
 
-    void SimularVenta(int Surt, int PrecioCombustible);
+    void SimularVenta(int PrecioCombustible, short unsigned int TipoComb);
+    void SimularFuga();
     void ConsultarTransacciones();
     void ReporteCantVendidaCombustibles();
 };

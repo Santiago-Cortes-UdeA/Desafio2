@@ -119,8 +119,3 @@ void Surtidor:: printVentas(int posventa) const{
     }
     std::cout<<std::endl<<"_________________________________________"<<std::endl;
 }
-
-void Surtidor::cambiarIsla(int NewIsla){
-    codigo_-=codigo_%1000-codigo_%10;
-    codigo_+=NewIsla*1000;
-}

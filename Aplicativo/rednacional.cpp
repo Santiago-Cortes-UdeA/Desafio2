@@ -21,21 +21,39 @@ void RedNacional::setPrecios(int Region, int Tipo, int NuevoPrecio){
 void RedNacional::AgregarES(string nombre, string gerente, int region, float Lat, float Long){
     float gps[2]{Lat, Long};
     int cod_est = (region+1)*100;
+    bool crear = true;
     if (CantidadEstaciones>0){
         cod_est += ((Estaciones[CantidadEstaciones-1]->getcodigo())%100)+1;
+        for (int i = 0; i<CantidadEstaciones; i++){
+            if (Estaciones[i]->getnombre()==nombre){
+                crear = false;
+                cout<<endl<<"El nombre de la Estacion no puede coincidir con el de otra ya existente"<<endl;
+                break;
+            }
+            else if (Estaciones[i]->getgps()[0]==gps[0] && Estaciones[i]->getgps()[1]==gps[1]){
+                crear = false;
+                cout<<endl<<"Las coordenadas GPS de la Estacion no pueden coincidir con las de otra ya existente"<<endl;
+                break;
+            }
+        }
     }
-    Estacion* Nueva = new Estacion (nombre, cod_est, gerente, region, gps);
-    Estacion** NuevaEstaciones = new Estacion* [CantidadEstaciones+1];
-    NuevaEstaciones[CantidadEstaciones] = Nueva;
-    for (int i = 0; i<CantidadEstaciones; i++){
-        NuevaEstaciones[i]=Estaciones[i];
-    }
-    //string nombre, int codigo, string gerente, int region, int cantidad_islas, int gps[2]
+    if (crear){
+        Estacion* Nueva = new Estacion (nombre, cod_est, gerente, region, gps);
+        Estacion** NuevaEstaciones = new Estacion* [CantidadEstaciones+1];
+        NuevaEstaciones[CantidadEstaciones] = Nueva;
+        for (int i = 0; i<CantidadEstaciones; i++){
+            NuevaEstaciones[i]=Estaciones[i];
+        }
 
-    delete [] Estaciones;
-    Estaciones=NuevaEstaciones;
-    CantidadEstaciones++;
-    cout<<endl<<"Se agrego la estacion exitosamente"<<endl;
+        delete [] Estaciones;
+        Estaciones=NuevaEstaciones;
+        CantidadEstaciones++;
+        cout<<endl<<"Se agrego la estacion exitosamente"<<endl;
+    }
+
+    else{
+        cout<<endl<<"No se pudo agregar la Estacion"<<endl;
+    }
 }
 
 void RedNacional::EliminarES(int Est){
@@ -81,4 +99,30 @@ void RedNacional::Ventas(){
         total[0]=0; total[1]=0; total[2]=0;
     }
     std::cout<<"_______________________________________\nPais\t|"<<pais[0]<<"\t|"<<pais[1]<<"\t|"<<pais[2]<<"\t|"<<std::endl;
+}
+
+void RedNacional::VerificarFugas(Estacion* Est){
+    bool fuga = false;
+    for (int i = 0; i<3; i++){
+        if (Est->getvendido(i)+Est->getalmacenamientoactual(i)<Est->gettanquecentral(i)*0.95){
+            cout<<"Hay una fuga de "<<Est->gettanquecentral(i) - (Est->getvendido(i)+Est->getalmacenamientoactual(i))<<" Litros de ";
+            switch (i){
+            case 0:
+                cout<<"Regular";
+                break;
+            case 1:
+                cout<<"Premium";
+                break;
+            case 2:
+                cout<<"EcoExtra";
+                break;
+            }
+            cout<<" en la Estacion "<<Est->getcodigo()<<endl;
+            fuga = true;
+        }
+    }
+
+    if (!fuga){
+        cout<<endl<<"No se encontraron fugas en la estacion "<<Est->getcodigo()<<endl;
+    }
 }

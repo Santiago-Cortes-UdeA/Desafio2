@@ -40,7 +40,6 @@ public:
     void printActivado() const;
 
     void newVenta(int CantComb, int TipoComb, int MetodoPago, int DocCliente, int Dinero);
-    void cambiarIsla(int NewIsla);//Conversar si es necesario o no (problemas de seguridad)
 };
 
 #endif // SURTIDOR_H

@@ -12,7 +12,7 @@ void AsignarCapTC(Estacion& Est){
 }
 
 Estacion::Estacion(string nombre, int codigo, string gerente, int region, float gps[])
-    : nombre_(nombre), codigo_(codigo), gerente_(gerente), region_(region), cantidad_surtidores_(0), cantidad_islas_(0), gps_{gps[0],gps[1]}, Surtidores(nullptr), codigos_islas(nullptr) {
+    : nombre_(nombre), codigo_(codigo), gerente_(gerente), region_(region), cantidad_surtidores_(0), cantidad_islas_(0), gps_{gps[0],gps[1]}, Surtidores(nullptr), codigos_islas(nullptr), vendido_{0,0,0} {
     AsignarCapTC(*this);
 }
 
@@ -61,40 +61,48 @@ void Estacion::AddSurtidor(string Modelo, int Isla){
 }
 
 void Estacion::DeleteSurtidor(int Surt){
+    bool DeleteIsla = true;
+    short unsigned int CodIsla = Surtidores[Surt]->getCodigo()%1000/100;
     if (!Surtidores[Surt]->getActivado()){
         Surtidor** Nuevo = new Surtidor* [cantidad_surtidores_-1];
         for (int i = 0; i<cantidad_surtidores_; i++){
-            if (i<Surt) Nuevo[i]=Surtidores[i];
-            else if (i>Surt) Nuevo[i-1]=Surtidores[i];
+            if (i<Surt) {
+                Nuevo[i]=Surtidores[i];
+                if (DeleteIsla && Nuevo[i]->getCodigo()%1000/100==CodIsla) DeleteIsla=false;
+            }
+            else if (i>Surt) {
+                Nuevo[i-1]=Surtidores[i];
+                if (DeleteIsla && Nuevo[i-1]->getCodigo()%1000/100==CodIsla) DeleteIsla=false;
+            }
         }
+        if (DeleteIsla){
+            int* BorradoIsla = new int [cantidad_islas_-1];
+            bool Eliminado = false;
+            for (short unsigned int i = 0; i<cantidad_islas_;i++){
+                if (codigos_islas[i]!=CodIsla && !Eliminado){
+                    BorradoIsla[i]=codigos_islas[i];
+                }
+                else if (codigos_islas[i]==CodIsla){
+                    Eliminado = true;
+                }
+                else{
+                    BorradoIsla[i-1]=codigos_islas[i];
+                }
+            }
+            delete[] codigos_islas;
+            codigos_islas=BorradoIsla;
+            cantidad_islas_--;
+        }
+
         delete Surtidores[Surt];
         delete [] Surtidores;
         Surtidores=Nuevo;
+
         cantidad_surtidores_--;
         std::cout<<endl<<"Surtidor borrado exitosamente"<<endl;
     }
     else{
         std::cout<<endl<<"No se puedo eliminar el surtidor "<<Surtidores[Surt]->getCodigo()<<" ya que permanece activo"<<endl;
-    }
-}
-
-void Estacion::MoverSurtIsla(int Surt, int Isla){
-    if (Isla==0){
-        if (cantidad_islas_==12){
-            std::cout<<std::endl<<"No se pudo mover el surtidor a una isla nueva ya que no pueden existir mas islas"<<std::endl;
-            return;
-        }
-        int* NuevaIsla = new int [cantidad_islas_+1];
-        for (int i = 0; i<cantidad_islas_; i++){
-            NuevaIsla[i]=codigos_islas[i];
-        }
-        NuevaIsla[cantidad_islas_]=codigos_islas[cantidad_islas_-1]+1;
-        Surtidores[Surt]->cambiarIsla(NuevaIsla[cantidad_islas_]);
-        delete[] codigos_islas;
-        codigos_islas=NuevaIsla;
-    }
-    else{
-        Surtidores[Surt]->cambiarIsla(codigos_islas[Isla]);
     }
 }
 
@@ -119,26 +127,54 @@ void Estacion::DesactivarSurtidor(int Surt){
 }
 
 void Estacion::ConsultarTransacciones(){
+    bool ventas = false;
     for (int i = 0; i<cantidad_surtidores_; i++){
         for (int j = 0; j<Surtidores[i]->getCantVentas(); j++){
             Surtidores[i]->printVentas(j);
+            ventas=true;
         }
+    }
+    if (!ventas){
+        cout<<endl<<"Esta estacion no ha realizado ventas aun"<<endl;
     }
 }
 
 void Estacion::ReporteCantVendidaCombustibles(){
-    cout<<"Se ha vendido:"<<endl<<"Regular\t\tPremium\t\tEcoExtra\n";
+    cout<<endl<<"Se ha vendido:"<<endl<<"Regular\t\tPremium\t\tEcoExtra\n";
     for (int i = 0; i<3; i++){
-        cout<<tanque_central_[i]-almacenamiento_actual_[i]<<" Litros\t";
+        cout<<vendido_[i]<<" Litros\t";
     }
+    cout<<endl;
 }
 
-void Estacion::SimularVenta(int Surt, int PrecioCombustible){
+void Estacion::SimularVenta(int PrecioCombustible, short unsigned int TipoComb){
+    short unsigned int CantComb = (rand()%18)+3;
+    int* SurtidoresAct = new int [cantidad_surtidores_];
+    short unsigned int CantSurtsAct = 0;
+    for (int i = 0; i<cantidad_surtidores_; i++){
+        if (Surtidores[i]->getActivado()){
+            SurtidoresAct[CantSurtsAct]=i;
+            CantSurtsAct++;
+        }
+    }
+    if (CantSurtsAct>0){
+        short unsigned int Surt = rand()%CantSurtsAct;
+        if (CantComb>almacenamiento_actual_[TipoComb]) CantComb=almacenamiento_actual_[TipoComb];
+        Surtidores[SurtidoresAct[Surt]]->newVenta(CantComb, TipoComb, rand()%3, (rand()%1000000000)+1000000000, CantComb*PrecioCombustible);
+        Surtidores[SurtidoresAct[Surt]]->printVentas(Surtidores[SurtidoresAct[Surt]]->getCantVentas()-1);
+        almacenamiento_actual_[TipoComb]-=CantComb;
+        vendido_[TipoComb]+=CantComb;
+    }
+    else{
+        cout<<endl<<"No se puede simular una venta ya que no hay surtidores activos en esta Estacion"<<endl;
+    }
+    delete[] SurtidoresAct;
+}
 
-    int CantComb = (rand()%18)+3;
-    int TipoComb = rand()%3;
-    if (CantComb>almacenamiento_actual_[TipoComb]) CantComb=almacenamiento_actual_[TipoComb];
-    Surtidores[Surt]->newVenta(CantComb, TipoComb, rand()%3, (rand()%1000000000)+1000000000, CantComb*PrecioCombustible);
-    Surtidores[Surt]->printVentas(Surtidores[Surt]->getCantVentas()-1);
-    almacenamiento_actual_[TipoComb]-=CantComb;
+void Estacion::SimularFuga(){
+    short unsigned int Tipo = rand()%3;
+    short unsigned int TamanoFuga = (rand()%tanque_central_[Tipo]/10)+1;
+    if (TamanoFuga>almacenamiento_actual_[Tipo]) TamanoFuga=almacenamiento_actual_[Tipo];
+    almacenamiento_actual_[Tipo]-=TamanoFuga;
+        cout<<endl<<"Se ha creado una fuga de "<<TamanoFuga<<" Litros en la estacion "<<codigo_<<endl;
 }

@@ -19,6 +19,8 @@ public:
     int getPrecio(int Region, int Tipo){return PrecioCombustible[Region][Tipo];}
     int getCantEsts(){return CantidadEstaciones;}
     Estacion* getEstacion(int Est){return Estaciones[Est];}
+
+    void VerificarFugas(Estacion* Est);
 };
 
 #endif // REDNACIONAL_H
