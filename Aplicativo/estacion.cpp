@@ -3,17 +3,14 @@
 #include <iostream>
 #include <string>
 
-void AsignarCapTC(Estacion& Est){
+Estacion::Estacion(string nombre, short unsigned int codigo, string gerente, short unsigned int region, float gps[2])
+    : nombre_(nombre), codigo_(codigo), gerente_(gerente), region_(region), cantidad_surtidores_(0), cantidad_islas_(0), gps_{gps[0],gps[1]}, Surtidores(nullptr), codigos_islas(nullptr), vendido_{0,0,0} {
+
     srand(time(0));
     for (int i = 0; i<3; i++){
-        Est.tanque_central_[i]=(rand()%101)+100;
-        Est.almacenamiento_actual_[i]=Est.tanque_central_[i];
+        tanque_central_[i]=(rand()%101)+100;
+        almacenamiento_actual_[i]=tanque_central_[i];
     }
-}
-
-Estacion::Estacion(string nombre, int codigo, string gerente, int region, float gps[])
-    : nombre_(nombre), codigo_(codigo), gerente_(gerente), region_(region), cantidad_surtidores_(0), cantidad_islas_(0), gps_{gps[0],gps[1]}, Surtidores(nullptr), codigos_islas(nullptr), vendido_{0,0,0} {
-    AsignarCapTC(*this);
 }
 
 Estacion::~Estacion(){
@@ -23,10 +20,10 @@ Estacion::~Estacion(){
     delete[] Surtidores;
 }
 
-void Estacion::AddSurtidor(string Modelo, int Isla){
+void Estacion::AddSurtidor(string Modelo, short unsigned int Isla){
     unsigned int cod_surt=codigo_*10000;
     if (Isla == 0){
-        int* NuevaIsla = new int [cantidad_islas_+1];
+        short unsigned int* NuevaIsla = new short unsigned int [cantidad_islas_+1];
         if (codigos_islas){
             for (int i = 0; i<cantidad_islas_; i++){
                 NuevaIsla[i]=codigos_islas[i];
@@ -60,7 +57,7 @@ void Estacion::AddSurtidor(string Modelo, int Isla){
     cout<<endl<<"El surtidor se agrego con exito"<<endl;
 }
 
-void Estacion::DeleteSurtidor(int Surt){
+void Estacion::DeleteSurtidor(short unsigned int Surt){
     bool DeleteIsla = true;
     short unsigned int CodIsla = Surtidores[Surt]->getCodigo()%1000/100;
     if (!Surtidores[Surt]->getActivado()){
@@ -76,9 +73,9 @@ void Estacion::DeleteSurtidor(int Surt){
             }
         }
         if (DeleteIsla){
-            int* BorradoIsla = new int [cantidad_islas_-1];
+            short unsigned int* BorradoIsla = new short unsigned int [cantidad_islas_-1];
             bool Eliminado = false;
-            for (short unsigned int i = 0; i<cantidad_islas_;i++){
+            for (short unsigned int i = 0; i<cantidad_islas_; i++){
                 if (codigos_islas[i]!=CodIsla && !Eliminado){
                     BorradoIsla[i]=codigos_islas[i];
                 }
@@ -106,7 +103,7 @@ void Estacion::DeleteSurtidor(int Surt){
     }
 }
 
-void Estacion::ActivarSurtidor(int Surt){
+void Estacion::ActivarSurtidor(short unsigned int Surt){
     if (!Surtidores[Surt]->getActivado()){
         Surtidores[Surt]->setActivado(true);
         std::cout<<"El surtidor "<<Surtidores[Surt]->getCodigo()<<" fue activado exitosamente"<<std::endl;
@@ -116,7 +113,7 @@ void Estacion::ActivarSurtidor(int Surt){
     }
 }
 
-void Estacion::DesactivarSurtidor(int Surt){
+void Estacion::DesactivarSurtidor(short unsigned int Surt){
     if (Surtidores[Surt]->getActivado()){
         Surtidores[Surt]->setActivado(false);
         std::cout<<"El surtidor "<<Surtidores[Surt]->getCodigo()<<" fue desactivado exitosamente"<<std::endl;
@@ -176,5 +173,5 @@ void Estacion::SimularFuga(){
     short unsigned int TamanoFuga = (rand()%tanque_central_[Tipo]/10)+1;
     if (TamanoFuga>almacenamiento_actual_[Tipo]) TamanoFuga=almacenamiento_actual_[Tipo];
     almacenamiento_actual_[Tipo]-=TamanoFuga;
-        cout<<endl<<"Se ha creado una fuga de "<<TamanoFuga<<" Litros en la estacion "<<codigo_<<endl;
+    cout<<endl<<"Se ha creado una fuga de "<<TamanoFuga<<" Litros en la estacion "<<nombre_<<" ("<<codigo_<<')'<<endl;
 }

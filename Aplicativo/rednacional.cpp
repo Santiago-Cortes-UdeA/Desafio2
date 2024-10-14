@@ -12,7 +12,12 @@ RedNacional::RedNacional():CantidadEstaciones(0),Estaciones(nullptr){
     }
 }
 
-RedNacional::~RedNacional(){}
+RedNacional::~RedNacional(){
+    for (int i = 0; i<CantidadEstaciones; i++){
+        delete[] Estaciones[i];
+    }
+    delete[] Estaciones;
+}
 
 void RedNacional::setPrecios(int Region, int Tipo, int NuevoPrecio){
     PrecioCombustible[Region][Tipo]=NuevoPrecio;
@@ -117,12 +122,12 @@ void RedNacional::VerificarFugas(Estacion* Est){
                 cout<<"EcoExtra";
                 break;
             }
-            cout<<" en la Estacion "<<Est->getcodigo()<<endl;
+            cout<<" en la Estacion "<<Est->getnombre()<<" ("<<Est->getcodigo()<<')'<<endl;
             fuga = true;
         }
     }
 
     if (!fuga){
-        cout<<endl<<"No se encontraron fugas en la estacion "<<Est->getcodigo()<<endl;
+        cout<<endl<<"No se encontraron fugas en la Estacion "<<Est->getnombre()<<" ("<<Est->getcodigo()<<')'<<endl;
     }
 }

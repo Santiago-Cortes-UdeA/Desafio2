@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-//#include "surtidor.h"
 #include "rednacional.h"
 using namespace std;
 template <typename T>
@@ -16,8 +15,6 @@ bool OpcionValida(T& Opcion, T limSup, T limInf=0){
     else cout<<endl<<"Numero fuera de rango. Intenta nuevamente.\n";
     return false;
 }
-
-
 
 int main()
 {
@@ -473,7 +470,6 @@ int main()
                 Estacion* Est = Red.getEstacion(rand()%Red.getCantEsts());
                 Est->SimularFuga();
             }
-
         }
 
         entradaValida=false;

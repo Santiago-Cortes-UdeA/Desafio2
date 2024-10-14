@@ -14,60 +14,42 @@ class Estacion {
 private:
     // Atributos
     string nombre_;
-    int codigo_;
+    short unsigned int codigo_;
     string gerente_;
-    int region_;
-    int cantidad_surtidores_;
-    int cantidad_islas_;
+    short unsigned int region_;
+    short unsigned int cantidad_surtidores_;
+    short unsigned int cantidad_islas_;
     float gps_[2];
-    int almacenamiento_actual_[3];
+    short unsigned int almacenamiento_actual_[3];
     Surtidor** Surtidores;
-    int* codigos_islas;
-    int tanque_central_[3];
-    int vendido_[3];
-
-    // Setters
-    void setNombre(string nombre) {nombre_= nombre;}
-    void setCodigo(int codigo) {codigo_= codigo;}
-    void setGerente(string gerente) {gerente_= gerente;}
-    void setRegion(int region) {region_= region;}
-    void setGPS(float gps[2]) {
-        gps_[0]= gps[0];
-        gps_[1]= gps[1];
-    }
-
-    void setAlmacenamientoActual(int almacenamiento_actual[3]) {
-        almacenamiento_actual_[0]= almacenamiento_actual[0];
-        almacenamiento_actual_[1]= almacenamiento_actual[1];
-        almacenamiento_actual_[2]= almacenamiento_actual[2];
-    }
-    void set_cantidad_surtidores(int cantidad_surtidores) {cantidad_surtidores_ = cantidad_surtidores;}
-    void set_cantidad_islas(int cantidad_islas) {cantidad_islas_ = cantidad_islas;}
+    short unsigned int* codigos_islas;
+    short unsigned int tanque_central_[3];
+    short unsigned int vendido_[3];
 
 public:
     // Constructor
-    Estacion(string nombre, int codigo, string gerente, int region, float gps[2]);
+    Estacion(string nombre, short unsigned int codigo, string gerente, short unsigned int region, float gps[2]);
     ~Estacion();
 
     // Getters
     string getnombre() const {return nombre_;}
-    int getcodigo() const {return codigo_;}
+    short unsigned int getcodigo() const {return codigo_;}
     string getgerente() const {return gerente_;}
-    int getregion() const {return region_;}
-    int getcantsurts() const {return cantidad_surtidores_;}
-    int getcantislas() const {return cantidad_islas_;}
-    int getcodigoisla(int isla){return codigos_islas[isla];}
-    int gettanquecentral(int tipo) {return tanque_central_[tipo];}
-    int getalmacenamientoactual(int tipo) {return almacenamiento_actual_[tipo];}
-    int getvendido(int tipo){return vendido_[tipo];}
+    short unsigned int getregion() const {return region_;}
+    short unsigned int getcantsurts() const {return cantidad_surtidores_;}
+    short unsigned int getcantislas() const {return cantidad_islas_;}
+    short unsigned int getcodigoisla(short unsigned int isla){return codigos_islas[isla];}
+    short unsigned int gettanquecentral(short unsigned int tipo) {return tanque_central_[tipo];}
+    short unsigned int getalmacenamientoactual(short unsigned int tipo) {return almacenamiento_actual_[tipo];}
+    short unsigned int getvendido(short unsigned int tipo){return vendido_[tipo];}
     float* getgps() {return gps_;}
     Surtidor* getSurtidor(int Surt) {return Surtidores[Surt];}
 
     // Otros
-    void AddSurtidor(string Modelo, int Isla);
-    void DeleteSurtidor(int Surt);
-    void ActivarSurtidor(int Surt);
-    void DesactivarSurtidor(int Surt);
+    void AddSurtidor(string Modelo, short unsigned int Isla);
+    void DeleteSurtidor(short unsigned int Surt);
+    void ActivarSurtidor(short unsigned int Surt);
+    void DesactivarSurtidor(short unsigned int Surt);
 
     void SimularVenta(int PrecioCombustible, short unsigned int TipoComb);
     void SimularFuga();

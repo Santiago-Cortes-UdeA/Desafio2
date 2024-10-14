@@ -11,18 +11,8 @@ Surtidor::~Surtidor(){
     delete[] ventas;
 }
 
-void Surtidor::setVentas(int** newVentas){
-
-    delete[] ventas;
-    ventas=new int* [cantventas_+1];
-
-    for (int i = 0; i<cantventas_+1; i++){
-        *(ventas+i)=*(newVentas+i);
-    }
-    cantventas_++;
-}
-
 unsigned int Surtidor::getDatoVentas(unsigned short int numVenta, unsigned short int numData){
+//Se le pasa el numero de la venta y la posicion a la que se desea acceder y se regresa este valor
     if (numVenta<cantventas_){
         return ventas[numVenta][numData];
     }
@@ -30,6 +20,7 @@ unsigned int Surtidor::getDatoVentas(unsigned short int numVenta, unsigned short
 }
 
 void Surtidor:: newVenta(int CantComb, int TipoComb, int MetodoPago, int DocCliente, int Dinero){
+//Crea un nuevo arreglo ventaActu donde se copian todas las ventas ya realizadas, y se añade en una nueva posición de memoria la nueva venta que se está realizando
     int** ventaActu = new int* [cantventas_+1];
     for (int i = 0; i<cantventas_; i++){
         ventaActu[i]=ventas[i];
@@ -42,20 +33,12 @@ void Surtidor:: newVenta(int CantComb, int TipoComb, int MetodoPago, int DocClie
 
     ventaActu[cantventas_]=new int [10]{tmStruct.tm_year+1900, tmStruct.tm_mon+1, tmStruct.tm_mday, tmStruct.tm_hour, tmStruct.tm_min, CantComb, TipoComb, MetodoPago, DocCliente, Dinero};
 
-    Surtidor::setVentas(ventaActu);
-    delete[] ventaActu;
-}
-
-void Surtidor::printCodigo() const{
-    std::cout<<"Codigo: "<<codigo_<<std::endl;
-}
-
-void Surtidor:: printModelo() const{
-    std::cout<<"Modelo: "<<modelo_<<std::endl;
-}
-
-void Surtidor:: printCantVentas() const{
-    std::cout<<"Cantidad Ventas: "<<cantventas_<<std::endl;
+    for (int i = 0; i<cantventas_; i++){
+        delete[] ventas[i];
+    }
+    delete[] ventas;
+    ventas=ventaActu;
+    cantventas_++;
 }
 
 void Surtidor:: printVentas(int posventa) const{
