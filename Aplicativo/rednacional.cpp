@@ -80,7 +80,7 @@ void RedNacional::Ventas(){
     unsigned int parcial [3]{0,0,0};
     std::cout<<"Ventas a lo largo del pais:\n";
     for (int i = 0; i < CantidadEstaciones; i++){
-        std::cout<<"_______________________________________\nEstacion "<<Estaciones[i]->getcodigo()<<std::endl;
+        std::cout<<"_______________________________________\nEstacion "<<Estaciones[i]->getnombre()<<" ("<<Estaciones[i]->getcodigo()<<')'<<std::endl;
         std::cout<<"Surtidor|Regular|Premium|EcoExtra"<<std::endl;
         for (int j = 0; j<Estaciones[i]->getcantsurts(); j++){
             std::cout<<(Estaciones[i]->getSurtidor(j))->getCodigo()<<"\t|";

@@ -138,7 +138,7 @@ int main()
                         short unsigned int Eliminar;
                         cout<<"0. "<<"Cancelar"<<endl;
                         for (int i = 0; i<Red.getCantEsts(); i++){
-                            cout<<i+1<<". "<<Red.getEstacion(i)->getcodigo()<<endl;
+                            cout<<i+1<<". "<<Red.getEstacion(i)->getnombre()<<" ("<<Red.getEstacion(i)->getcodigo()<<')'<<endl;
                         }
                         while(!entradaValida){
                             cout<<"Ingrese el numero correspondiente a la estacion que desea eliminar"<<endl;
@@ -243,7 +243,7 @@ int main()
                 cout<<endl<<"Estaciones disponibles: "<<endl;
                 short unsigned int Est=-1;
                 for (int i = 0; i<Red.getCantEsts(); i++){
-                    cout<<i+1<<". "<<Red.getEstacion(i)->getcodigo()<<endl;
+                    cout<<i+1<<". "<<Red.getEstacion(i)->getnombre()<<" ("<<Red.getEstacion(i)->getcodigo()<<')'<<endl;
                 }
                 while (!entradaValida){
                     cout<<"\nIngrese el numero que corresponde a la estacion a la que desea acceder:"<<endl;
@@ -424,7 +424,7 @@ int main()
                 short unsigned int Est=-1;
                 cout<<endl<<"Estaciones Disponibles:"<<endl;
                 for (int i = 0; i<Red.getCantEsts(); i++){
-                    cout<<i+1<<". "<<Red.getEstacion(i)->getcodigo()<<endl;
+                    cout<<i+1<<". "<<Red.getEstacion(i)->getnombre()<<" ("<<Red.getEstacion(i)->getcodigo()<<')'<<endl;
                 }
                 while (!entradaValida){
                     cout<<"\nIngrese el numero que corresponde a la estacion donde desea verificar la presencia de fugas:"<<endl;
@@ -446,7 +446,7 @@ int main()
                 short unsigned int Est=-1;
                 cout<<endl<<"Estaciones Disponibles:"<<endl;
                 for (int i = 0; i<Red.getCantEsts(); i++){
-                    cout<<i+1<<". "<<Red.getEstacion(i)->getcodigo()<<endl;
+                    cout<<i+1<<". "<<Red.getEstacion(i)->getnombre()<<" ("<<Red.getEstacion(i)->getcodigo()<<')'<<endl;
                 }
                 while (!entradaValida){
                     cout<<"\nIngrese el numero que corresponde a la estacion a la que desea acceder:"<<endl;
