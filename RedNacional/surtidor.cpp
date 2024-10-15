@@ -2,7 +2,7 @@
 #include <iostream>
 #include <chrono>
 
-Surtidor::Surtidor(short unsigned int codigo, string modelo, bool activado):codigo_(codigo), modelo_(modelo), cantventas_(0), activado_(activado), ventas(nullptr){}
+Surtidor::Surtidor(unsigned int codigo, string modelo):codigo_(codigo), modelo_(modelo), cantventas_(0), activado_(true), ventas(nullptr){}
 
 Surtidor::~Surtidor(){
     delete[] ventas;
@@ -16,14 +16,14 @@ void Surtidor::setVentas(int** newVentas){
     for (int i = 0; i<cantventas_+1; i++){
         *(ventas+i)=*(newVentas+i);
     }
-    this->setCantVentas(cantventas_+1);
+    cantventas_++;
 }
 
 unsigned int Surtidor::getDatoVentas(unsigned short int numVenta, unsigned short int numData){
     if (numVenta<cantventas_){
         return ventas[numVenta][numData];
     }
-    else return -1;
+    else return 0;
 }
 
 void Surtidor:: newVenta(int CantComb, int TipoComb, int MetodoPago, int DocCliente, int Dinero){
@@ -67,7 +67,7 @@ void Surtidor:: printVentas(int posventa) const{
         return;
     }
 
-    std::cout<<std::endl<<"Venta Numero "<<posventa+1<<std::endl;
+    std::cout<<std::endl<<"Venta Numero "<<posventa+1<<" del Surtidor con Codigo "<<codigo_<<std::endl;
     for (int j = 0; j<10; j++){
         switch (j){
 

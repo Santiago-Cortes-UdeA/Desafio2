@@ -8,28 +8,30 @@ using namespace std;
 class Surtidor
 {
 private:
-    short unsigned int codigo_;
+    int codigo_;
     string modelo_;
     short unsigned int cantventas_;
     bool activado_;
-    int** ventas = new int* [cantventas_];
+    int** ventas;
 
     void setCodigo(unsigned int newCodigo){codigo_ = newCodigo;}
     void setModelo(unsigned int newModelo){modelo_ = newModelo;}
     void setCantVentas(unsigned int newCantVentas){cantventas_ = newCantVentas;}
-    void setActivado(bool newActivado){activado_ = newActivado;}
+
     void setVentas(int** newVentas);
 
 
 public:
-    Surtidor(short unsigned int codigo, string modelo, bool activado = true);
+    Surtidor(unsigned int codigo, string modelo);
     ~Surtidor();
 
-    short unsigned int getCodigo() {return codigo_;}
+    int getCodigo() {return codigo_;}
     string getModelo() const {return modelo_;}
     short unsigned int getCantVentas() const {return cantventas_;}
     unsigned int getDatoVentas(unsigned short int numVenta, unsigned short int numData);
     bool getActivado()const {return activado_;}
+
+    void setActivado(bool newActivado){activado_ = newActivado;}
 
     void printCodigo() const;
     void printModelo() const;
@@ -41,3 +43,4 @@ public:
 };
 
 #endif // SURTIDOR_H
+
