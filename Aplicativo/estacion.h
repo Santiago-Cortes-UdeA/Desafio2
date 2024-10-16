@@ -9,8 +9,6 @@ using namespace std;
 
 class Estacion {
 
-    friend void AsignarCapTC(Estacion& Est);
-
 private:
     // Atributos
     string nombre_;
