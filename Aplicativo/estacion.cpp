@@ -14,9 +14,6 @@ Estacion::Estacion(string nombre, short unsigned int codigo, string gerente, sho
 }
 
 Estacion::~Estacion(){
-    for(int i = 0; i<cantidad_surtidores_; i++){
-        delete[] Surtidores[i];
-    }
     delete[] Surtidores;
 }
 

@@ -33,9 +33,6 @@ void Surtidor:: newVenta(int CantComb, int TipoComb, int MetodoPago, int DocClie
 
     ventaActu[cantventas_]=new int [10]{tmStruct.tm_year+1900, tmStruct.tm_mon+1, tmStruct.tm_mday, tmStruct.tm_hour, tmStruct.tm_min, CantComb, TipoComb, MetodoPago, DocCliente, Dinero};
 
-    for (int i = 0; i<cantventas_; i++){
-        delete[] ventas[i];
-    }
     delete[] ventas;
     ventas=ventaActu;
     cantventas_++;
