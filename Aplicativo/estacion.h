@@ -51,7 +51,7 @@ public:
     void ActivarSurtidor(short unsigned int Surt);
     void DesactivarSurtidor(short unsigned int Surt);
 
-    void SimularVenta(int PrecioCombustible, short unsigned int TipoComb);
+    void SimularVenta(short unsigned int PrecioCombustible, short unsigned int TipoComb);
     void SimularFuga();
     void ConsultarTransacciones();
     void ReporteCantVendidaCombustibles();

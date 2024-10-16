@@ -5,7 +5,7 @@
 Surtidor::Surtidor(unsigned int codigo, string modelo):codigo_(codigo), modelo_(modelo), cantventas_(0), activado_(true), ventas(nullptr){}
 
 Surtidor::~Surtidor(){
-    for (int i = 0; i<cantventas_; i++){
+    for (short unsigned int i = 0; i<cantventas_; i++){
         delete[] ventas[i];
     }
     delete[] ventas;
@@ -38,7 +38,7 @@ void Surtidor:: newVenta(int CantComb, int TipoComb, int MetodoPago, int DocClie
     cantventas_++;
 }
 
-void Surtidor:: printVentas(int posventa) const{
+void Surtidor:: printVentas(short unsigned int posventa) const{
 
     if (cantventas_<1){
         std::cout<<std::endl<<"El surtidor con codigo "<< codigo_ <<" no ha realizado ventas"<<std::endl;

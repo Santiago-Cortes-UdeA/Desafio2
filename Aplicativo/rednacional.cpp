@@ -4,8 +4,8 @@
 #include <string>
 
 RedNacional::RedNacional():CantidadEstaciones(0),Estaciones(nullptr){
-    int precio = 1000;
-    for (int i = 0; i<3; i++){
+    short unsigned int precio = 1000;
+    for (short unsigned int i = 0; i<3; i++){
         for (int j = 0; j<3; j++){
             PrecioCombustible[i][j]=precio*((j+1)+(i+1)/(3-i));
         }
@@ -16,17 +16,17 @@ RedNacional::~RedNacional(){
     delete[] Estaciones;
 }
 
-void RedNacional::setPrecios(int Region, int Tipo, int NuevoPrecio){
+void RedNacional::setPrecios(short unsigned int Region, short unsigned int Tipo, short unsigned int NuevoPrecio){
     PrecioCombustible[Region][Tipo]=NuevoPrecio;
 }
 
-void RedNacional::AgregarES(string nombre, string gerente, int region, float Lat, float Long){
+void RedNacional::AgregarES(string nombre, string gerente, short unsigned int region, float Lat, float Long){
     float gps[2]{Lat, Long};
     int cod_est = (region+1)*100;
     bool crear = true;
     if (CantidadEstaciones>0){
         cod_est += ((Estaciones[CantidadEstaciones-1]->getcodigo())%100)+1;
-        for (int i = 0; i<CantidadEstaciones; i++){
+        for (short unsigned int i = 0; i<CantidadEstaciones; i++){
             if (Estaciones[i]->getnombre()==nombre){
                 crear = false;
                 cout<<endl<<"El nombre de la Estacion no puede coincidir con el de otra ya existente"<<endl;
@@ -43,7 +43,7 @@ void RedNacional::AgregarES(string nombre, string gerente, int region, float Lat
         Estacion* Nueva = new Estacion (nombre, cod_est, gerente, region, gps);
         Estacion** NuevaEstaciones = new Estacion* [CantidadEstaciones+1];
         NuevaEstaciones[CantidadEstaciones] = Nueva;
-        for (int i = 0; i<CantidadEstaciones; i++){
+        for (short unsigned int i = 0; i<CantidadEstaciones; i++){
             NuevaEstaciones[i]=Estaciones[i];
         }
 
@@ -58,15 +58,15 @@ void RedNacional::AgregarES(string nombre, string gerente, int region, float Lat
     }
 }
 
-void RedNacional::EliminarES(int Est){
-    for (int i = 0; i<Estaciones[Est]->getcantsurts(); i++){
+void RedNacional::EliminarES(short unsigned int Est){
+    for (short unsigned int i = 0; i<Estaciones[Est]->getcantsurts(); i++){
         if (Estaciones[Est]->getSurtidor(i)->getActivado()){
             std::cout<<std::endl<<"La estacion no se puede eliminar ya que todavia posee surtidores activos"<<std::endl;
             return;
         }
     }
     Estacion** Eliminar = new Estacion* [CantidadEstaciones+1];
-    for (int i = 0; i<CantidadEstaciones; i++){
+    for (short unsigned int i = 0; i<CantidadEstaciones; i++){
         if (i<Est) Eliminar[i]=Estaciones[i];
         else if (i>Est) Eliminar[i-1]=Estaciones[i];
     }
@@ -81,12 +81,12 @@ void RedNacional::Ventas(){
     unsigned int total [3]{0,0,0};
     unsigned int parcial [3]{0,0,0};
     std::cout<<"Ventas a lo largo del pais:\n";
-    for (int i = 0; i < CantidadEstaciones; i++){
+    for (short unsigned int i = 0; i < CantidadEstaciones; i++){
         std::cout<<"_______________________________________\nEstacion "<<Estaciones[i]->getnombre()<<" ("<<Estaciones[i]->getcodigo()<<')'<<std::endl;
         std::cout<<"Surtidor|Regular|Premium|EcoExtra"<<std::endl;
-        for (int j = 0; j<Estaciones[i]->getcantsurts(); j++){
+        for (short unsigned int j = 0; j<Estaciones[i]->getcantsurts(); j++){
             std::cout<<(Estaciones[i]->getSurtidor(j))->getCodigo()<<"\t|";
-            for (int k = 0; k<(Estaciones[i]->getSurtidor(j))->getCantVentas(); k++){
+            for (short unsigned int k = 0; k<(Estaciones[i]->getSurtidor(j))->getCantVentas(); k++){
                 parcial[(Estaciones[i]->getSurtidor(j))->getDatoVentas(k,6)]+=(Estaciones[i]->getSurtidor(j))->getDatoVentas(k,9);
             }
             for (int k = 0; k<3; k++){
@@ -105,7 +105,7 @@ void RedNacional::Ventas(){
 
 void RedNacional::VerificarFugas(Estacion* Est){
     bool fuga = false;
-    for (int i = 0; i<3; i++){
+    for (short unsigned int i = 0; i<3; i++){
         if (Est->getvendido(i)+Est->getalmacenamientoactual(i)<Est->gettanquecentral(i)*0.95){
             cout<<"Hay una fuga de "<<Est->gettanquecentral(i) - (Est->getvendido(i)+Est->getalmacenamientoactual(i))<<" Litros de ";
             switch (i){

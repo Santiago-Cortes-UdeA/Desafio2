@@ -127,7 +127,7 @@ int main()
                         string Modelo;
                         unsigned short int Isla = 0;
                         getline(cin, Modelo);
-                        for (int i = 0; i<2; i++){
+                        for (short unsigned int i = 0; i<2; i++){
                             entradaValida=false;
                             cout<<"\nIngrese el modelo del surtidor: \n";
                             while (!entradaValida){
@@ -169,7 +169,7 @@ int main()
                         cout<<endl<<"Estaciones disponibles: "<<endl;
                         short unsigned int Eliminar;
                         cout<<"0. "<<"Cancelar"<<endl;
-                        for (int i = 0; i<Red.getCantEsts(); i++){
+                        for (short unsigned int i = 0; i<Red.getCantEsts(); i++){
                             cout<<i+1<<". "<<Red.getEstacion(i)->getnombre()<<" ("<<Red.getEstacion(i)->getcodigo()<<')'<<endl;
                         }
                         while(!entradaValida){
@@ -274,7 +274,7 @@ int main()
             else{
                 cout<<endl<<"Estaciones disponibles: "<<endl;
                 short unsigned int Est=-1;
-                for (int i = 0; i<Red.getCantEsts(); i++){
+                for (short unsigned int i = 0; i<Red.getCantEsts(); i++){
                     cout<<i+1<<". "<<Red.getEstacion(i)->getnombre()<<" ("<<Red.getEstacion(i)->getcodigo()<<')'<<endl;
                 }
                 while (!entradaValida){
@@ -318,7 +318,7 @@ int main()
                             if (EstAct->getcantislas()>0){
                                 cout<<"\nIslas disponibles:\n"
                                         "0. Isla Nueva\n";
-                                for (int i = 0; i<EstAct->getcantislas(); i++){
+                                for (short unsigned int i = 0; i<EstAct->getcantislas(); i++){
                                     cout<<i+1<<". "<<EstAct->getcodigoisla(i)<<endl;
                                 }
                                 while (!entradaValida){
@@ -374,10 +374,10 @@ int main()
 
                     else if (Opcion_==3){
                         entradaValida=false;
-                        int* SurtidoresInactivos = new int [EstAct->getcantsurts()];
-                        int CantSurtsIna = 0;
+                        short unsigned int* SurtidoresInactivos = new short unsigned int [EstAct->getcantsurts()];
+                        short unsigned int CantSurtsIna = 0;
                         cout<<endl<<"Surtidores Inactivos:"<<endl;
-                        for (int i = 0; i<EstAct->getcantsurts(); i++){
+                        for (short unsigned int i = 0; i<EstAct->getcantsurts(); i++){
                             if (!EstAct->getSurtidor(i)->getActivado()){
                                 cout<<CantSurtsIna+1<<". "<<EstAct->getSurtidor(i)->getCodigo()<<endl;
                                 SurtidoresInactivos[CantSurtsIna]=i;
@@ -404,10 +404,10 @@ int main()
 
                     else if (Opcion_==4){
                         entradaValida=false;
-                        int* SurtidoresActivos = new int [EstAct->getcantsurts()];
-                        int CantSurtsAct = 0;
+                        short unsigned int* SurtidoresActivos = new short unsigned int [EstAct->getcantsurts()];
+                        short unsigned int CantSurtsAct = 0;
                         cout<<endl<<"Surtidores Activos:"<<endl;
-                        for (int i = 0; i<EstAct->getcantsurts(); i++){
+                        for (short unsigned int i = 0; i<EstAct->getcantsurts(); i++){
                             if (EstAct->getSurtidor(i)->getActivado()){
                                 cout<<CantSurtsAct+1<<". "<<EstAct->getSurtidor(i)->getCodigo()<<endl;
                                 SurtidoresActivos[CantSurtsAct]=i;
@@ -455,7 +455,7 @@ int main()
             else{
                 short unsigned int Est=-1;
                 cout<<endl<<"Estaciones Disponibles:"<<endl;
-                for (int i = 0; i<Red.getCantEsts(); i++){
+                for (short unsigned int i = 0; i<Red.getCantEsts(); i++){
                     cout<<i+1<<". "<<Red.getEstacion(i)->getnombre()<<" ("<<Red.getEstacion(i)->getcodigo()<<')'<<endl;
                 }
                 while (!entradaValida){
@@ -477,7 +477,7 @@ int main()
             else{
                 short unsigned int Est=-1;
                 cout<<endl<<"Estaciones Disponibles:"<<endl;
-                for (int i = 0; i<Red.getCantEsts(); i++){
+                for (short unsigned int i = 0; i<Red.getCantEsts(); i++){
                     cout<<i+1<<". "<<Red.getEstacion(i)->getnombre()<<" ("<<Red.getEstacion(i)->getcodigo()<<')'<<endl;
                 }
                 while (!entradaValida){
