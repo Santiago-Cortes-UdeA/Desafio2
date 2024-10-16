@@ -13,9 +13,6 @@ RedNacional::RedNacional():CantidadEstaciones(0),Estaciones(nullptr){
 }
 
 RedNacional::~RedNacional(){
-    for (int i = 0; i<CantidadEstaciones; i++){
-        delete[] Estaciones[i];
-    }
     delete[] Estaciones;
 }
 

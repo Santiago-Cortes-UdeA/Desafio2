@@ -120,7 +120,42 @@ int main()
                         entradaValida=OpcionValida<short unsigned int>(Agregar,2,1);
                     }
 
-                    if (Agregar==1) Red.AgregarES(Nombre, Gerente, Region-1, Lat, Long);
+                    if (Agregar==1) {
+                        Red.AgregarES(Nombre, Gerente, Region-1, Lat, Long);
+                        Estacion* EstAct = Red.getEstacion(Red.getCantEsts()-1);
+                        cout<<"\nLa estacion debe poseer al menos 2 surtidores.\nSe procedera con su creacion.\nSi desea agregar mas surtidores ingrese a Gestion de Estaciones -> Seleccione la estacion correspondiente -> Agregar Surtidor"<<endl;
+                        string Modelo;
+                        unsigned short int Isla = 0;
+                        getline(cin, Modelo);
+                        for (int i = 0; i<2; i++){
+                            entradaValida=false;
+                            cout<<"\nIngrese el modelo del surtidor: \n";
+                            while (!entradaValida){
+                                getline(cin, Modelo);
+                                if (Modelo.empty()){
+                                    cout<<"\nEl modelo no puede estar vacio. Intentelo de nuevo\n";
+                                }
+                                else entradaValida=true;
+                            }
+                            entradaValida=false;
+                            if (i>0){
+                                cout<<"\nIslas disponibles:\n"
+                                        "0. Isla Nueva\n"
+                                        "1. 0"<<endl;
+
+                                while (!entradaValida){
+                                    cout<<endl<<"Ingrese el numero correspondiente a la isla en la que desea agregar el surtidor:\n";
+                                    cin>>Isla;
+                                    entradaValida=OpcionValida<unsigned short int>(Isla, EstAct->getcantislas());
+                                }
+
+                            }
+                            else{
+                                cout<<endl<<"Se agregara en una isla nueva ya que no hay islas preexistentes en esta estacion\n";
+                            }
+                            EstAct->AddSurtidor(Modelo,Isla);
+                        }
+                    }
 
                     entradaValida=false;
                 }
