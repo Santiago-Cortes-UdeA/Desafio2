@@ -25,7 +25,7 @@ public:
 
     void setActivado(bool newActivado){activado_ = newActivado;}
 
-    void printVentas(int posventa) const;
+    void printVentas(short unsigned int posventa) const;
 
     void newVenta(int CantComb, int TipoComb, int MetodoPago, int DocCliente, int Dinero);
 };

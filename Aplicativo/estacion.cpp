@@ -22,7 +22,7 @@ void Estacion::AddSurtidor(string Modelo, short unsigned int Isla){
     if (Isla == 0){
         short unsigned int* NuevaIsla = new short unsigned int [cantidad_islas_+1];
         if (codigos_islas){
-            for (int i = 0; i<cantidad_islas_; i++){
+            for (short unsigned int i = 0; i<cantidad_islas_; i++){
                 NuevaIsla[i]=codigos_islas[i];
             }
             NuevaIsla[cantidad_islas_]=codigos_islas[cantidad_islas_-1]+1;
@@ -59,7 +59,7 @@ void Estacion::DeleteSurtidor(short unsigned int Surt){
     short unsigned int CodIsla = Surtidores[Surt]->getCodigo()%1000/100;
     if (!Surtidores[Surt]->getActivado()){
         Surtidor** Nuevo = new Surtidor* [cantidad_surtidores_-1];
-        for (int i = 0; i<cantidad_surtidores_; i++){
+        for (short unsigned int i = 0; i<cantidad_surtidores_; i++){
             if (i<Surt) {
                 Nuevo[i]=Surtidores[i];
                 if (DeleteIsla && Nuevo[i]->getCodigo()%1000/100==CodIsla) DeleteIsla=false;
@@ -122,8 +122,8 @@ void Estacion::DesactivarSurtidor(short unsigned int Surt){
 
 void Estacion::ConsultarTransacciones(){
     bool ventas = false;
-    for (int i = 0; i<cantidad_surtidores_; i++){
-        for (int j = 0; j<Surtidores[i]->getCantVentas(); j++){
+    for (short unsigned int i = 0; i<cantidad_surtidores_; i++){
+        for (short unsigned int j = 0; j<Surtidores[i]->getCantVentas(); j++){
             Surtidores[i]->printVentas(j);
             ventas=true;
         }
@@ -135,17 +135,17 @@ void Estacion::ConsultarTransacciones(){
 
 void Estacion::ReporteCantVendidaCombustibles(){
     cout<<endl<<"Se ha vendido:"<<endl<<"Regular\t\tPremium\t\tEcoExtra\n";
-    for (int i = 0; i<3; i++){
+    for (short unsigned int i = 0; i<3; i++){
         cout<<vendido_[i]<<" Litros\t";
     }
     cout<<endl;
 }
 
-void Estacion::SimularVenta(int PrecioCombustible, short unsigned int TipoComb){
+void Estacion::SimularVenta(short unsigned int PrecioCombustible, short unsigned int TipoComb){
     short unsigned int CantComb = (rand()%18)+3;
-    int* SurtidoresAct = new int [cantidad_surtidores_];
+    short unsigned * SurtidoresAct = new short unsigned int [cantidad_surtidores_];
     short unsigned int CantSurtsAct = 0;
-    for (int i = 0; i<cantidad_surtidores_; i++){
+    for (short unsigned int i = 0; i<cantidad_surtidores_; i++){
         if (Surtidores[i]->getActivado()){
             SurtidoresAct[CantSurtsAct]=i;
             CantSurtsAct++;

@@ -5,19 +5,19 @@ class RedNacional
 {
 private:
     Estacion** Estaciones;
-    int PrecioCombustible [3][3];
-    int CantidadEstaciones;
+    short unsigned int PrecioCombustible [3][3];
+    short unsigned int CantidadEstaciones;
 
 public:
     RedNacional();
     ~RedNacional();
-    void AgregarES(string nombre, string gerente, int region, float Lat, float Long);
-    void EliminarES(int Est);
+    void AgregarES(string nombre, string gerente, short unsigned int region, float Lat, float Long);
+    void EliminarES(short unsigned int Est);
     void Ventas();
-    void setPrecios(int Region, int Tipo, int NuevoPrecio);
+    void setPrecios(short unsigned int Region, short unsigned int Tipo, short unsigned int NuevoPrecio);
 
-    int getPrecio(int Region, int Tipo){return PrecioCombustible[Region][Tipo];}
-    int getCantEsts(){return CantidadEstaciones;}
+    short unsigned int getPrecio(int Region, int Tipo){return PrecioCombustible[Region][Tipo];}
+    short unsigned int getCantEsts(){return CantidadEstaciones;}
     Estacion* getEstacion(int Est){return Estaciones[Est];}
 
     void VerificarFugas(Estacion* Est);
